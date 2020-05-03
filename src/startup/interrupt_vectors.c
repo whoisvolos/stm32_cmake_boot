@@ -16,6 +16,11 @@ void SVC_Handler                   (void) __attribute__ ((weak, alias("Default_H
 void DebugMon_Handler              (void) __attribute__ ((weak, alias("Default_Handler")));
 void PendSV_Handler                (void) __attribute__ ((weak, alias("Default_Handler")));
 void SysTick_Handler               (void) __attribute__ ((weak, alias("Default_Handler")));
+/*
+void SysTick_Handler() {
+
+}
+*/
 
 void WWDG_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
 void PVD_PVM_IRQHandler            (void) __attribute__ ((weak, alias("Default_Handler")));

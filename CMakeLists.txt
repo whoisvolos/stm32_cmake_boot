@@ -12,11 +12,11 @@ add_definitions(
         -DSTM32F4
         # Concrete MCU
         -DSTM32F401xC
-        # HSE (crystal resonator) freq, MHz
+        # HSE (crystal resonator) freq, MHz, useless for now
         -DHSE_VALUE=25000000
-        # HSI (internal RC oscillator) freq, MHz
+        # HSI (internal RC oscillator) freq, MHz, useless for now
         -DHSI_VALUE=16000000
-        # Which one to use (HSE/HSI)
+        # Which one to use (HSE/HSI), useless for now
         -DCLOCK_SOURCE=HSE
 )
 

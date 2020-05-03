@@ -27,7 +27,7 @@ void fill_data();
 void init_array();
 void fini_array();
 
-__attribute__((noreturn)) void Reset_Handler() {
+__attribute__((noreturn, weak)) void Reset_Handler() {
     // TODO: Move after hardware init?
     zero_bss();
     fill_data();
@@ -84,8 +84,8 @@ inline void __attribute__((always_inline)) fini_array() {
     uint32_t i;
 
     count = __fini_array_end - __fini_array_start;
-    for (i = count; i > 0; i--)
-        __fini_array_start[i-1] ();
+    for (i = count - 1; i >= 0; i--)
+        __fini_array_start[i] ();
 
     //_fini ();
 }

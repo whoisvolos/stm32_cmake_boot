@@ -44,8 +44,25 @@ void clock_init() {
     while((RCC->CR & RCC_CR_HSERDY) != RCC_CR_HSERDY);
 
     /* PLL config */
-    RCC->PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) - 1) << 16) | (PLL_Q << 24);
+    //RCC->PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) - 1) << 16) | (PLL_Q << 24);
+    MODIFY_REG(RCC->PLLCFGR,
+               RCC_PLLCFGR_PLLSRC | RCC_PLLCFGR_PLLM | RCC_PLLCFGR_PLLN,
+               RCC_PLLCFGR_PLLSRC_HSE |
+               (RCC_PLLCFGR_PLLM_4 | RCC_PLLCFGR_PLLM_3 | RCC_PLLCFGR_PLLM_0) | // 25
+               (336 << RCC_PLLCFGR_PLLN_Pos)); // 168
+    MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLP, RCC_PLLCFGR_PLLP_0); //DIV4
+#if defined(RCC_PLLR_SYSCLK_SUPPORT)
+    MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLR, RCC_PLLCFGR_PLLP_0); //DIV2
+#endif /* RCC_PLLR_SYSCLK_SUPPORT */
 
+    /* USB ONLY
+    MODIFY_REG(RCC->PLLCFGR,
+               RCC_PLLCFGR_PLLSRC | RCC_PLLCFGR_PLLM | RCC_PLLCFGR_PLLN | RCC_PLLCFGR_PLLQ,
+               RCC_PLLCFGR_PLLSRC_HSE |
+               (RCC_PLLCFGR_PLLM_4 | RCC_PLLCFGR_PLLM_3 | RCC_PLLCFGR_PLLM_0) | // 25
+               (336 << RCC_PLLCFGR_PLLN_Pos) |
+               (RCC_PLLCFGR_PLLQ_2|RCC_PLLCFGR_PLLQ_1|RCC_PLLCFGR_PLLQ_0)); // DIV7
+    */
     /* HCLK = SYSCLK / 1 */
     RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
     /* PCLK2 = HCLK / 1 */
