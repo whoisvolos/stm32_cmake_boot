@@ -1,4 +1,5 @@
 #include "aux.h"
+#include "foo.h"
 
 // Quick and dirty delay
 static void delay (unsigned int time) {
@@ -19,8 +20,8 @@ void GPIO_en() {
 
 int main() {
     GPIO_en();
+    foo();
     while (1) {
-        //xputs("Speed of MCU: %i\n");
         // Set the state of pin 13 to output high
         GPIOC->BSRR = GPIO_BSRR_BS_13;
         delay(500);
