@@ -34,6 +34,7 @@ __attribute__((noreturn, weak)) void Reset_Handler() {
     init_array();
 
     // Hardware/clock init
+    // TODO: PWR init?
     core_init();
     set_flash_latency();
     clock_reset();

@@ -21,7 +21,7 @@ add_definitions(
 )
 
 include_directories(src/include src/include/cmsis src/include/device)
-file(GLOB_RECURSE USER_SOURCES src/*.c src/*.cpp)
+file(GLOB_RECURSE USER_SOURCES src/*.c src/*.cpp src/include/*.c)
 
 add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${LINKER_SCRIPT})
 
