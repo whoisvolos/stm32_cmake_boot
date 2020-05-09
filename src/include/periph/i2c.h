@@ -7,9 +7,10 @@
 #define I2C_ADDRESS(addr, mode) ((addr<<1) | mode)
 
 #define SSD1306_Address             I2C_ADDRESS(0x3C, I2C_MODE_WRITE)
-#define SSD1306_Command_Mode        0x80
-#define SSD1306_Data_Mode           0xC0
-#define SSD1306_Dats_Mode           0x40
+#define SSD1306_DataStream          0x40
+#define SSD1306_CommandStream       0x00
+#define SSD1306_SingleByte          0xC0
+#define SSD1306_SingleCommand       0x80
 
 #define SSD1306_BLACK               0
 #define SSD1306_WHITE               0xFF
@@ -64,6 +65,6 @@ void I2C_init();
 void ssd1306_send(uint8_t control_byte, uint8_t data);
 void ssd1306_Init();
 void ssd1306_SendCommand(uint8_t command);
-void ssd1306_SendData(uint8_t *data, uint8_t count);
+void ssd1306_SendData(uint8_t mode, uint8_t *data, uint8_t count);
 void ssd1306_Fill(uint8_t color);
 void ssd1306_UpdateScreen(void);

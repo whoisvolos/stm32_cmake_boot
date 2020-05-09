@@ -185,7 +185,7 @@ void ssd1306_SendCommand(uint8_t command) {
     ssd1306_send(0x0/*SSD1306_Command_Mode*/, command);
 }
 
-void ssd1306_SendData(uint8_t *data, uint8_t count) {
+void ssd1306_SendData(uint8_t mode, uint8_t *data, uint8_t count) {
     I2C1->CR1 |= I2C_CR1_START;
 
     while (!(I2C1->SR1 & I2C_SR1_SB));
@@ -197,7 +197,7 @@ void ssd1306_SendData(uint8_t *data, uint8_t count) {
     (void) I2C1->SR1;
     (void) I2C1->SR2;
 
-    I2C1->DR = SSD1306_Dats_Mode;
+    I2C1->DR = mode;
     while (!(I2C1->SR1 & I2C_SR1_TXE));
 
     for(uint8_t index = 0; index < count; ++index) {
@@ -237,9 +237,7 @@ void ssd1306_Fill(uint8_t color) {
 }*/
 
 void ssd1306_Init() {
-    for (uint8_t i = 0; i < sizeof(ssd_1306_init_seq_2); ++i) {
-        ssd1306_SendCommand(ssd_1306_init_seq_2[i]);
-    }
+    ssd1306_SendData(SSD1306_CommandStream, ssd_1306_init_seq_2, sizeof(ssd_1306_init_seq_2));
 }
 
 // Write the screenbuffer with changed to the screen
@@ -254,16 +252,14 @@ void ssd1306_UpdateScreen(void) {
         ssd1306_SendCommand(0xB0 + i); // Set the current RAM page address.
         ssd1306_SendCommand(0x00);
         ssd1306_SendCommand(0x10);
-        ssd1306_SendData(&SSD1306_Buffer[SSD1306_WIDTH*i],SSD1306_WIDTH);
+        ssd1306_SendData(SSD1306_DataStream, &SSD1306_Buffer[SSD1306_WIDTH*i], SSD1306_WIDTH);
     }
 }
 
 // Fill the whole screen with the given color
 void ssd1306_Fill(uint8_t color) {
     // Set memory
-    uint32_t i;
-
-    for(i = 0; i < sizeof(SSD1306_Buffer); i++) {
-        SSD1306_Buffer[i] = color;
+    for(uint32_t i = 0; i < sizeof(SSD1306_Buffer) / 4; i++) {
+        *(uint32_t *)&SSD1306_Buffer[i] = color;
     }
 }
